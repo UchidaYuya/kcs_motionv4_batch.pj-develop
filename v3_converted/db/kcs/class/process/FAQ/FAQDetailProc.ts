@@ -1,0 +1,125 @@
+//
+//FAQ表示
+//
+//更新履歴：<br>
+//2008/09/30 石崎 作成
+//
+//@uses FAQBaseProc
+//@uses UserFAQModel
+//@uses FAQDetailView
+//@package FAQ
+//@subpackage Process
+//@author ishizaki<ishizaki@motion.co.jp>
+//@since 2008/09/30
+//@filesource
+//
+//
+//error_reporting(E_ALL|E_STRICT);
+//
+//FAQ表示
+//
+//@package FAQ
+//@subpackage Process
+//@author ishizaki<ishizaki@motion.co.jp>
+//@since 2008/09/30
+//
+
+require("process/FAQ/FAQBaseProc.php");
+
+require("model/FAQ/UserFAQModel.php");
+
+require("view/FAQ/FAQDetailView.php");
+
+//
+//コンストラクト
+//
+//@author ishizaki
+//@since 2008/06/26
+//
+//@param array $H_param
+//@access public
+//@return void
+//
+//
+//getView
+//
+//@author ishizaki
+//@since 2008/09/30
+//
+//@access protected
+//@return void
+//
+//
+//getModel
+//
+//@author ishizaki
+//@since 2008/09/30
+//
+//@access protected
+//@return void
+//
+//
+//addNewClass
+//
+//@author ishizaki
+//@since 2008/10/16
+//
+//@access protected
+//@return void
+//
+//
+//selfProcessBody
+//
+//@author ishizaki
+//@since 2008/10/19
+//
+//@access protected
+//@return void
+//
+//
+//デストラクト
+//
+//@author ishizaki
+//@since 2008/06/26
+//
+//@access public
+//@return void
+//
+class FAQDetailProc extends FAQBaseProc {
+	constructor(H_param: {} | any[] = Array()) {
+		super(H_param);
+	}
+
+	getView() {
+		this.H_param.navi = {
+			"menu.php": "FAQ\u4E00\u89A7",
+			"list.php": "\u304A\u554F\u3044\u5408\u308F\u305B\u5C65\u6B74",
+			"": "\u304A\u554F\u3044\u5408\u308F\u305B\u7DE8\u96C6"
+		};
+		this.O_view = new FAQDetailView(this.H_param);
+	}
+
+	getModel() {
+		this.O_model = new UserFAQModel();
+	}
+
+	addNewClass() {}
+
+	selfProcessBody(H_param) //お問い合わせIDの取得
+	//お問い合わせの詳細を取得
+	{
+		var id = this.O_view.getID();
+		var H_InquiryDetail = this.O_model.getInquiryDetail(id, H_param);
+
+		if (1 > H_InquiryDetail.length) {
+			this.O_view.setAssign("err_str", "\u304A\u554F\u3044\u5408\u308F\u305B\u306E\u6307\u5B9A\u304C\u4E0D\u6B63\u3067\u3059\u3002");
+		} else {
+			this.O_view.setAssign("InquiryDetail", H_InquiryDetail);
+		}
+	}
+
+	__destruct() {
+		super.__destruct();
+	}
+
+};

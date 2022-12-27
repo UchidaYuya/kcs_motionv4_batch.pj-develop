@@ -1,0 +1,2 @@
+print(phpinfo());
+echo("~\n");
